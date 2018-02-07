@@ -1,37 +1,48 @@
 var canvas = document.getElementById("board");
 var ctx = canvas.getContext("2d");
 var stop = document.getElementById("stop");
-
+var requestID;
+ctx.fillStyle = "#23d412";
 
 var clearing = function() {
     ctx.clearRect(0, 0, 500, 500);
     ctx.beginPath();
 }
 
-var requestID;
+//stop frames; reset frames
+var stop_it = function() {
+    window.cancelAnimationFrame(requestID);
+    requestID = 0;
+}
+
 
 var circling = function(e) {
-    var radius = 25;
-    var x = 0;
-    var y = 250;
-    requestID = 0;
-    clearing();
+
+    //reset radius, mode, stop ongoing animation
+    var radius = 1;
+    var mode = 1;
+    stop_it();
+    
     var draw = function() {
-	ctx.beginPath();
-	ctx.arc(x, y, radius, 0, 2*Math.PI);
-	ctx.fillStyle = "#23d412";
+	clearing();
+	//change direction?
+	if (radius==250 || radius == 0) {
+	    mode *= -1;
+	}
+	//draw circle
+	ctx.arc(250, 250, radius, 0, 2*Math.PI);
 	ctx.fill();
-	x++;
+	//increase or decrease radius
+	radius += mode;
+	//loop
 	requestID = window.requestAnimationFrame(draw);
     }
+
+    //initiate loop
     draw();
 }
 
-var stopit = function() {
-    window.cancelAnimationFrame(requestID);
-}
 
-stop.addEventListener("click", stopit);
+stop.addEventListener("click", stop_it);
 canvas.addEventListener("click", circling);
 
-//window.requestAnimationFrame(circling);
