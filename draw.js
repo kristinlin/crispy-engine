@@ -60,8 +60,8 @@ var dvd_mimic = function(e) {
     stop_it();
     var width = 120;
     var height = 75;
-    var x = canvas.width/2;
-    var y = canvas.height/2;
+    var x = Math.floor(Math.random() * (canvas.width - width));
+    var y = Math.floor(Math.random() * (canvas.height - height));
     var y_mode = -3;
     var x_mode = -3;
     
